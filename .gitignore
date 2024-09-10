@@ -1,0 +1,42 @@
+# SBT
+target/
+project/target/
+project/project/
+project/target/
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Maven
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+
+# Scala
+*.class
+*.sbt
+*.swp
+*.swo
+*.DS_Store
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+coverage-report/
+coverage-result/
