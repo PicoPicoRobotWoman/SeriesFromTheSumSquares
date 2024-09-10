@@ -6,30 +6,30 @@ object Main extends App {
     (2 to math.sqrt(n).toInt).map(x => x * x)
   }
 
+  def findUniquePairsFunctional(n: Int): Seq[(Int, Int)] = {
+    (1 to n).map(x => (x, n - x)).filter { case (x, y) => x != y }.filter { case (x, y) => y != 0 && x != 0 }
+  }
+
   val n: Int = readInt()
 
-  val squares: Seq[Int] = squareNumbersLessThan(n * 2)
+  val squares: Seq[Int] = squareNumbersLessThan(n * 2 -1)
 
   val allPairs = squares.flatMap(findUniquePairsFunctional)
 
-  val emptyMatrixPairs = createMatrix(n + 1)
+  lazy val emptyMatrixPairs = createMatrix(n + 1)
 
 
-  val fullMatrixPairs = allPairs.foldLeft(emptyMatrixPairs) {
+  lazy val fullMatrixPairs = allPairs.foldLeft(emptyMatrixPairs) {
     case (agg, (x, y)) =>
       updateMatrixValue(agg, x, y, true)
   }
 
   printMatrix(fullMatrixPairs)
 
-  val res = findAllChains(fullMatrixPairs)
+  val res = findAllChains(fullMatrixPairs).filter(_.size == n)
 
   println(res)
   println(res.size)
-
-  def findUniquePairsFunctional(n: Int): Seq[(Int, Int)] = {
-    (1 to n).map(x => (x, n - x)).filter { case (x, y) => x != y }.filter { case (x, y) => y != 0 && x != 0}
-  }
 
   def createMatrix(n: Int): Array[Array[Boolean]] = {
     Array.tabulate(n, n)((_, _) => false)
@@ -63,8 +63,9 @@ object Main extends App {
 
     def loop(cursor: Int, acc: Seq[Int], nums: Seq[Int]): List[Seq[Int]] = {
 
-      if (nums.nonEmpty) {
-        val pairs = findTrueInRow(matrix, cursor).map(_._2).filter(num => nums.contains(num)).toList
+      val pairs = findTrueInRow(matrix, cursor).map(_._2).filter(num => nums.contains(num)).toList
+
+      if (pairs.nonEmpty) {
 
         pairs.flatMap { num =>
           loop(num, acc ++ Seq(num), nums.filter(_ != num))
@@ -80,8 +81,5 @@ object Main extends App {
     fullNums.flatMap(num => loop(num, Seq(num), fullNums.filter(_ != num)))
 
   }
-
-
-
 
 }
